@@ -21,7 +21,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - - name: Create .env file for CI env
+    - name: Create .env file for CI env
       env:
         CI_BASE_URL: ${{ secrets.BASE_URL }}
         CI_ADMIN_USER: ${{ secrets.ADMIN_USER }}
