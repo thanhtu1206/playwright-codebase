@@ -95,7 +95,8 @@ export class PostPage extends BasePage {
 
     await this.btnAddPostLink.click();
 
-    await this.page.getByRole('link', { name: 'View Posts' }).click();
+    // await this.page.getByRole('link', { name: 'View Posts' }).click();
+    await this.page.goto(`${process.env.BASE_URL}/edit.php`)
   }
 
   async createSimplePost(title: string) {

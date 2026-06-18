@@ -31,7 +31,7 @@ export class UserPage extends BasePage {
   ) {
     await this.navigateToUsersMenu();
     await this.page.locator('.wrap').getByRole('link', { name: 'Add User' }).click();
-    
+
     await this.page.getByRole('textbox', { name: 'Username (required)' }).fill(username);
     await this.page.getByRole('textbox', { name: 'Email (required)' }).fill(email);
     await this.page.locator('#pass1').fill('');
@@ -62,6 +62,7 @@ export class UserPage extends BasePage {
 
     if (await this.radDeleteAllContent.isVisible()) {
       await this.radDeleteAllContent.check();
+      await this.page.waitForTimeout(500);
     }
 
     await this.btnConfirmDeletion.click();

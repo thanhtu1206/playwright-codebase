@@ -27,7 +27,7 @@ test.describe('WordPress Post Management', () => {
       await expect(page.locator('#the-list')).toContainText(tagName);
     });
 
-    await test.step('B3: Tạo bài viết mới, gán Category và Tag vừa tạo khi Publish', async () => {
+    await test.step('B3: Tạo bài viết mới, gán Category và Tag vừa tạo khi Publish', async () => { 
       await postPage.createPostWithTagAndCategory(postTitle, categoryName, tagName);
 
       await postPage.searchPost(postTitle);
