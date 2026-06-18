@@ -52,22 +52,18 @@ export class PostPage extends BasePage {
     this.btnSearchTags = this.page.locator('.search-box').getByRole('button');
   }
 
-  async createAndSearchCategory(categoryName: string) {
+  async createCategory(categoryName: string) {
     await this.clickMenu('Posts');
     await this.page.getByRole('link', { name: 'Categories' }).click();
     await this.txtCategoryName.fill(categoryName);
     await this.btnAddCategory.click();
-    await this.txtSearchCategories.fill(categoryName);
-    await this.btnSearchCategories.click();
   }
 
-  async createAndSearchTag(tagName: string) {
+  async createTag(tagName: string) {
     await this.clickMenu('Posts');
     await this.page.getByRole('link', { name: 'Tags' }).click();
     await this.txtTagName.fill(tagName);
     await this.btnAddTag.click();
-    await this.txtSearchTags.fill(tagName);
-    await this.btnSearchTags.click();
   }
 
   async createPostWithTagAndCategory(title: string, categoryName: string, tagName: string) {
@@ -75,7 +71,7 @@ export class PostPage extends BasePage {
     await this.btnAddNewPost.click();
 
     const btnCloseGuide = this.page.getByRole('button', { name: 'Close dialog' });
-    if (await btnCloseGuide.isVisible({ timeout: 4000 })) {
+    if (await btnCloseGuide.isVisible({ timeout: 2000 })) {
       await btnCloseGuide.click();
     }
 
@@ -92,10 +88,13 @@ export class PostPage extends BasePage {
     const tagInput = this.page.getByRole('combobox', { name: 'Add Tag' });
     await tagInput.fill(tagName);
     await tagInput.press('Enter');
+    await this.page.waitForTimeout(500);
 
     await this.btnPublishSubmit.click();
+    await this.page.waitForTimeout(500);
 
     await this.btnAddPostLink.click();
+
     await this.page.getByRole('link', { name: 'View Posts' }).click();
   }
 
@@ -110,6 +109,15 @@ export class PostPage extends BasePage {
 
     await this.btnAddPostLink.click();
     await this.page.getByRole('link', { name: 'View Posts' }).click();
+  }
+
+  async searchTag(tagName: string) {
+    await this.txtSearchTags.fill(tagName);
+    await this.btnSearchTags.click();
+  }
+  async searchCategory(categoryName: string) {
+    await this.txtSearchCategories.fill(categoryName);
+    await this.btnSearchCategories.click();
   }
 
   async searchPost(title: string) {

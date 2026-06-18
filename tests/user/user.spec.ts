@@ -3,12 +3,12 @@ import { StringUtil } from '../../src/utils/string.util';
 
 test.describe('WordPress User Management', () => {
   // Khai báo các biến dùng chung cho các test case
-  let suffix = StringUtil.generateRandomString(4);
-  let username = `user_test_${suffix}`;
-  let email = `user_${suffix}@example.com`;
-  let password = `Password@123_${suffix}`;
+  let uniqueID = StringUtil.generateRandomString(4);
+  let username = `user_test_${uniqueID}`;
+  let email = `user_${uniqueID}@example.com`;
+  let password = `Password@123_${uniqueID}`;
 
-  test.beforeEach(async ({ loginPage, page }) => {
+  test.beforeEach(async ({ loginPage }) => {
     await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
   });
 
@@ -66,7 +66,7 @@ test.describe('WordPress User Management', () => {
     });
 
     await test.step('B3: Thử tạo bài viết mới bằng tài khoản user', async () => {
-      const postTitle = `Post tạo bởi Editor ${suffix}`;
+      const postTitle = `Post tạo bởi Editor ${uniqueID}`;
       await postPage.createSimplePost(postTitle);
       await postPage.searchPost(postTitle);
     });
