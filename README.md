@@ -1,21 +1,3 @@
-# Playwright Automation Codebase for WP-Admin
-
-Dự án kiểm thử tự động cho trang quản trị WordPress sử dụng Playwright và TypeScript.
-
-## Tài liệu Thiết kế Dự án
-Vui lòng đọc các tài liệu phân tích và thiết kế dưới đây trước khi đóng góp code:
-*   [Phân tích Tính năng & Lưu ý](./project-documentations/01-website-feature.md)
-*   [Thiết kế Cấu trúc Thư mục](./project-documentations/02-folder-design.md)
-*   [Thiết kế Page Object Model (POM)](./project-documentations/03-pom-design.md)
-*   [Thiết kế Utils](./project-documentations/04-utils-design.md)
-*   [Thiết kế Fixtures](./project-documentations/05-fixture-design.md)
-*   [Quy ước Viết Code (Coding Convention)](./project-documentations/06-coding-convention-design.md)
-
-## Hướng dẫn Khởi chạy
-1. Sao chép file `.env.example` thành `.env` và điền thông tin tài khoản.
-2. Cài đặt thư viện: `npm install`
-3. Chạy test: `npx playwright test`
-
 # Playwright Automation Codebase - WordPress Practice
 
 Dự án kiểm thử tự động Website WordPress Practice sử dụng Playwright và TypeScript.
