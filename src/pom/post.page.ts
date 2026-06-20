@@ -9,7 +9,7 @@ export class PostPage extends BasePage {
   txtPostTitle: Locator;
   btnPublishToggle: Locator;
   btnPublishSubmit: Locator;
-  btnAddPostLink: Locator;
+  // btnAddPostLink: Locator;
 
   txtCategoryName: Locator;
   btnAddCategory: Locator;
@@ -39,7 +39,7 @@ export class PostPage extends BasePage {
     this.btnPublishSubmit = this.page
       .getByRole('button', { name: 'Publish', exact: true })
       .and(this.page.locator('.editor-post-publish-button'));
-    this.btnAddPostLink = this.page.getByRole('link', { name: 'Add Post', exact: true });
+    // this.btnAddPostLink = this.page.getByRole('link', { name: 'Add Post', exact: true });
 
     this.txtCategoryName = this.page.locator('#addtag').getByLabel('Name');
     this.btnAddCategory = this.page.getByRole('button', { name: 'Add Category' });
@@ -93,7 +93,7 @@ export class PostPage extends BasePage {
     await this.btnPublishSubmit.click();
     await this.page.waitForTimeout(500);
 
-    await this.btnAddPostLink.click();
+    // await this.btnAddPostLink.click();
 
     // await this.page.getByRole('link', { name: 'View Posts' }).click();
     await this.page.goto(`${process.env.BASE_URL}/edit.php`)

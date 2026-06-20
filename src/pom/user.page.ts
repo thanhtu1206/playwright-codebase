@@ -58,14 +58,14 @@ export class UserPage extends BasePage {
 
     const targetRow = this.page.getByRole('row', { name: username }).first();
     await targetRow.hover();
-      await this.page.waitForTimeout(500);
+    await this.page.waitForTimeout(500);
     await targetRow.getByRole('link', { name: 'Delete' }).click();
 
     if (await this.radDeleteAllContent.isVisible()) {
       await this.radDeleteAllContent.check();
-      await this.page.waitForTimeout(500);
     }
-
+    await this.page.waitForTimeout(500);
+    
     await this.btnConfirmDeletion.click();
   }
 }
