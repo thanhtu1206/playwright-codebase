@@ -27,11 +27,12 @@ export class LoginPage extends BasePage {
   }
 
   async logout() {
-    const adminMenuItem = this.page.locator('#wp-admin-bar-my-account');
-    const btnLogOutMenuItem = this.page.getByRole('menuitem', { name: 'Log Out' })
-    await adminMenuItem.hover();
-    await this.page.waitForTimeout(500);
-    await btnLogOutMenuItem.click();
-    await this.page.waitForURL(/.*wp-login.php.*/);
+    const logoutUrl = process.env.BASE_URL!.replace('/wp-admin', '/wp-login.php?action=logout');
+    const confirmLogoutLink = this.page.locator('text=log out');
+
+    await this.page.goto(logoutUrl);
+    
+    await confirmLogoutLink.waitFor({ state: 'visible', timeout: 5000 });
+    await confirmLogoutLink.click();
   }
 }
