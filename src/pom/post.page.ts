@@ -108,8 +108,7 @@ export class PostPage extends BasePage {
     await this.btnPublishToggle.click();
     await this.btnPublishSubmit.click();
 
-    await this.btnAddPostLink.click();
-    await this.page.getByRole('link', { name: 'View Posts' }).click();
+    await this.page.goto(`${process.env.BASE_URL}/edit.php`)
   }
 
   async searchTag(tagName: string) {

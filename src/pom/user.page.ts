@@ -63,9 +63,9 @@ export class UserPage extends BasePage {
 
     if (await this.radDeleteAllContent.isVisible()) {
       await this.radDeleteAllContent.check();
+      await this.page.waitForTimeout(1000);
     }
-    await this.page.waitForTimeout(500);
-    
-    await this.btnConfirmDeletion.click();
+
+    await this.btnConfirmDeletion.click({ force: true });
   }
 }

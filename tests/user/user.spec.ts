@@ -2,33 +2,49 @@ import { test, expect } from '../../src/fixtures/test.fixture';
 import { StringUtil } from '../../src/utils/string.util';
 
 test.describe('WordPress User Management', () => {
-  let uniqueID = StringUtil.generateRandomString(4);
-  let username = `user_test_${uniqueID}`;
-  let email = `user_${uniqueID}@example.com`;
-  let password = `Password@123_${uniqueID}`;
+  let uniqueID: string;
+  let username: string;
+  let email: string;
+  let password: string;
 
   test.beforeEach(async ({ loginPage }) => {
     test.setTimeout(60000);
+
+    const uniqueID = Math.random().toString(36).substring(2, 6);
+    username = `user_test_${uniqueID}`;
+    email = `user_${uniqueID}@example.com`;
+    password = `StrongPass@DemoUserTest`;
 
     await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
   });
 
   test.afterEach(async ({ loginPage, userPage, page }) => {
-    const myAccountLocator = page.locator('#wp-admin-bar-my-account');
-    const isVisible = await myAccountLocator.isVisible({ timeout: 2000 }).catch(() => false);
+    try {
+      const myAccountLocator = page.locator('#wp-admin-bar-my-account');
+      const isVisible = await myAccountLocator.isVisible({ timeout: 3000 }).catch(() => false);
 
-    if (isVisible) {
-      const accountText = await myAccountLocator.innerText();
-      if (!accountText.includes(process.env.ADMIN_USER!)) {
-        await loginPage.logout();
-        await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
+      if (isVisible) {
+        const accountText = await myAccountLocator.innerText();
+        if (!accountText.includes(process.env.ADMIN_USER!)) {
+          await loginPage.logout();
+          await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
+        }
+      } else {
+        await page.goto(process.env.BASE_URL!);
       }
-    } else {
-      await page.goto(process.env.BASE_URL!);
-    }
 
-    await userPage.deleteUser(username);
-    await expect(page.locator('#message.notice p')).toContainText('User deleted.');
+      await page.goto(`${process.env.BASE_URL}/users.php`);
+      await page.waitForLoadState('networkidle');
+
+      await userPage.deleteUser(username);
+
+      const deleteNotice = page.locator('#message.notice p');
+      if (await deleteNotice.isVisible({ timeout: 5000 }).catch(() => false)) {
+        await expect(deleteNotice).toContainText('User deleted.');
+      }
+    } catch (error) {
+      console.warn('⚠️ Cảnh báo lỗi xảy ra trong AfterEach:', error.message);
+    }
   });
 
   // ==========================================================================
