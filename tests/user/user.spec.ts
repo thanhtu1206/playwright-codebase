@@ -10,12 +10,12 @@ test.describe('WordPress User Management', () => {
   test.beforeEach(async ({ loginPage }) => {
     test.setTimeout(60000);
 
-    const uniqueID = Math.random().toString(36).substring(2, 6);
+    uniqueID = Math.random().toString(36).substring(2, 6);
     username = `user_test_${uniqueID}`;
     email = `user_${uniqueID}@example.com`;
     password = `StrongPass@DemoUserTest`;
 
-    await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
+    // await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
   });
 
   test.afterEach(async ({ loginPage, userPage, page }) => {

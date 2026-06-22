@@ -1,0 +1,65 @@
+{
+  "cookies": [
+    {
+      "name": "wordpress_sec_e778134cbff8432635b7b4b45a7ba56c",
+      "value": "betterbytes.academy.admin%7C1782290448%7Cfakg0LBHdOu0qUxFRd1lPBzojcuKnkpneCaA6xgtP9J%7C281871f8b14be7eecf403792237309d2b548df9642497bdfd89dc5df02786b1d",
+      "domain": "pw-practice-dev.playwrightvn.com",
+      "path": "/wp-content/plugins",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_sec_e778134cbff8432635b7b4b45a7ba56c",
+      "value": "betterbytes.academy.admin%7C1782290448%7Cfakg0LBHdOu0qUxFRd1lPBzojcuKnkpneCaA6xgtP9J%7C281871f8b14be7eecf403792237309d2b548df9642497bdfd89dc5df02786b1d",
+      "domain": "pw-practice-dev.playwrightvn.com",
+      "path": "/wp-admin",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_test_cookie",
+      "value": "WP%20Cookie%20check",
+      "domain": "pw-practice-dev.playwrightvn.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_logged_in_e778134cbff8432635b7b4b45a7ba56c",
+      "value": "betterbytes.academy.admin%7C1782290448%7Cfakg0LBHdOu0qUxFRd1lPBzojcuKnkpneCaA6xgtP9J%7C03736cf69a8e1eb391a20905abb5b2f0f305b78c555b63e302cc705cf1eccc63",
+      "domain": "pw-practice-dev.playwrightvn.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wp-settings-143",
+      "value": "mfold%3Do%26posts_list_mode%3Dlist%26libraryContent%3Dbrowse%26unfold%3D1",
+      "domain": "pw-practice-dev.playwrightvn.com",
+      "path": "/",
+      "expires": 1813653650.894134,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wp-settings-time-143",
+      "value": "1782117648",
+      "domain": "pw-practice-dev.playwrightvn.com",
+      "path": "/",
+      "expires": 1813653650.894356,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}

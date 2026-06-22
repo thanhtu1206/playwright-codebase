@@ -29,8 +29,8 @@ export class UserPage extends BasePage {
     password: string,
     role: 'Editor' | 'Administrator' | 'Author' | 'Contributor' | 'Subscriber' = 'Editor',
   ) {
-    await this.navigateToUsersMenu();
-    await this.page.locator('.wrap').getByRole('link', { name: 'Add User' }).click();
+    await this.page.goto(`${process.env.BASE_URL}/user-new.php`);
+    await this.page.waitForLoadState('networkidle').catch(() => {});
 
     await this.page.getByRole('textbox', { name: 'Username (required)' }).fill(username);
     await this.page.getByRole('textbox', { name: 'Email (required)' }).fill(email);
