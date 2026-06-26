@@ -8,13 +8,11 @@ export class BasePage {
   }
 
   async navigateTo(path: string = '') {
-    await this.page.goto(path);
+    const cleanRootUrl = process.env.BASE_URL!.replace('/wp-admin', '');
+    await this.page.goto(`${cleanRootUrl}/wp-login.php`, { waitUntil: 'load' });
   }
 
   async clickMenu(menuText: string) {
-    await this.page
-      .locator('#adminmenu .wp-menu-name')
-      .filter({ hasText: menuText })
-      .click();
+    await this.page.locator('#adminmenu .wp-menu-name').filter({ hasText: menuText }).click();
   }
 }

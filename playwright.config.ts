@@ -23,8 +23,20 @@ export default defineConfig({
     },
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },
+      testIgnore: /auth\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json', 
+      },
       dependencies: ['setup'],
     },
+    {
+      name: 'auth-tests',
+      testMatch: /auth\.spec\.ts/, 
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: { cookies: [], origins: [] }, 
+      },
+    }
   ],
 });

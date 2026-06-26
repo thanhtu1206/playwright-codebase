@@ -37,7 +37,7 @@ export class UserPage extends BasePage {
     await this.page.locator('#pass1').fill('');
     await this.page.locator('#pass1').fill(password);
 
-    // Xác nhận nếu mật khẩu yếu
+    // Check vào checkbox nếu mật khẩu yếu
     const chkWeakPassword = this.page.locator('input[name="pw_weak"]');
     if (await chkWeakPassword.isVisible()) {
       await chkWeakPassword.check();
@@ -56,16 +56,29 @@ export class UserPage extends BasePage {
     await this.navigateToUsersMenu();
     await this.searchUser(username);
 
-    const targetRow = this.page.getByRole('row', { name: username }).first();
-    await targetRow.hover();
-    await this.page.waitForTimeout(500);
-    await targetRow.getByRole('link', { name: 'Delete' }).click();
+    const targetRow = this.page.getByRole('row', { name: username });
+    const deleteBtnLocator = targetRow.getByRole('link', { name: 'Delete' });
+    const deleteHref = await deleteBtnLocator.getAttribute('href');
 
-    if (await this.radDeleteAllContent.isVisible()) {
-      await this.radDeleteAllContent.check();
-      await this.page.waitForTimeout(1000);
+    if (!deleteHref) {
+      console.error(`❌ Không lấy được link Delete của user "${username}"`);
+      return;
     }
 
-    await this.btnConfirmDeletion.click({ force: true });
+    const fullDeleteUrl = deleteHref.startsWith('http') ? deleteHref : `${process.env.BASE_URL}/${deleteHref}`;
+    await this.page.goto(fullDeleteUrl);
+    await this.page.waitForLoadState('load');
+    
+    if (this.page.url().includes('action=delete')) {
+      const isCheckboxVisible = await this.radDeleteAllContent.isVisible({ timeout: 3000 }).catch(() => false);
+
+      if (isCheckboxVisible) {
+        await this.radDeleteAllContent.check();
+        await this.page.waitForTimeout(1000);
+      }
+
+      await this.btnConfirmDeletion.click();
+      await this.page.waitForLoadState('networkidle').catch(() => {});
+    }
   }
 }

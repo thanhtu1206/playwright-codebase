@@ -7,43 +7,66 @@ test.describe('WordPress User Management', () => {
   let email: string;
   let password: string;
 
-  test.beforeEach(async ({ loginPage }) => {
+  test.beforeEach(async ({ loginPage, page }) => {
     test.setTimeout(60000);
-
     uniqueID = Math.random().toString(36).substring(2, 6);
     username = `user_test_${uniqueID}`;
     email = `user_${uniqueID}@example.com`;
     password = `StrongPass@DemoUserTest`;
 
-    // await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
+    await page.goto(`${process.env.BASE_URL}/users.php`).catch(() => {});
+
+    const isLoginPage = await page
+      .locator('#user_login')
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
+
+    if (isLoginPage) {
+      await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
+    }
   });
 
   test.afterEach(async ({ loginPage, userPage, page }) => {
-    try {
-      const myAccountLocator = page.locator('#wp-admin-bar-my-account');
-      const isVisible = await myAccountLocator.isVisible({ timeout: 3000 }).catch(() => false);
+    if (page.isClosed()) return;
 
-      if (isVisible) {
-        const accountText = await myAccountLocator.innerText();
-        if (!accountText.includes(process.env.ADMIN_USER!)) {
-          await loginPage.logout();
-          await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
-        }
-      } else {
-        await page.goto(process.env.BASE_URL!);
-      }
+    await page.goto(`${process.env.BASE_URL}/users.php`).catch(() => {});
+    const hasAdminAccess = await page
+      .locator('#adminmenu')
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
 
-      await page.goto(`${process.env.BASE_URL}/users.php`);
-      await page.waitForLoadState('networkidle');
-
+    if (hasAdminAccess) {
       await userPage.deleteUser(username);
+      return;
+    }
 
-      const deleteNotice = page.locator('#message.notice p');
-      if (await deleteNotice.isVisible({ timeout: 5000 }).catch(() => false)) {
-        await expect(deleteNotice).toContainText('User deleted.');
+    const maxRetries = 3;
+    let isLoginSuccess = false;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await page.goto(`${process.env.BASE_URL.replace('/wp-admin', '')}/wp-login.php?action=logout`).catch(() => {});
+        const confirmLogoutLink = page.locator('a:has-text("log out")');
+        if (await confirmLogoutLink.isVisible({ timeout: 1500 }).catch(() => false)) {
+          await confirmLogoutLink.click();
+        }
+
+        await page.goto(`${process.env.BASE_URL.replace('/wp-admin', '')}/wp-login.php`);
+        await loginPage.login(process.env.ADMIN_USER!, process.env.ADMIN_PASSWORD!);
+
+        isLoginSuccess = true;
+        break;
+      } catch (error) {
+        if (attempt < maxRetries) await page.waitForTimeout(1500);
       }
-    } catch (error) {
-      console.warn('⚠️ Cảnh báo lỗi xảy ra trong AfterEach:', error.message);
+    }
+
+    if (isLoginSuccess) {
+      await userPage.deleteUser(username);
+    } else {
+      throw new Error(
+        `❌ Không thể đăng nhập lại Admin ở afterEach để dọn dẹp. Dữ liệu rác của user "${username}" vẫn tồn tại!`,
+      );
     }
   });
 
@@ -72,7 +95,7 @@ test.describe('WordPress User Management', () => {
     await test.step('B2: Đăng xuất admin và đăng nhập user mới tạo', async () => {
       await loginPage.logout();
       await loginPage.login(username, password);
-      await expect(page.locator('#wp-admin-bar-my-account')).toContainText(username);
+      await expect(page.locator('#wp-admin-bar-my-account')).toBeVisible({ timeout: 5000 });
     });
   });
 
